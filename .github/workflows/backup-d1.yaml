@@ -5,7 +5,7 @@ permissions:
 on:
     schedule:
         # Run daily at UTC 04:00 (1 hour after the auto cleanup task)
-        - cron: "0 4 * * *"
+        - cron: "13 4 * * 0"
     workflow_dispatch:
         inputs:
             environment:
@@ -121,6 +121,7 @@ jobs:
                   AWS_DEFAULT_REGION: ${{ secrets.S3_REGION }}
                   BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
               run: |
+                  aws configure set default.s3.addressing_style virtual
                   # Set custom S3 endpoint if configured (for S3-compatible services like MinIO, R2, etc.)
                   ENDPOINT_FLAG=""
                   if [ -n "${{ secrets.S3_ENDPOINT }}" ]; then
@@ -147,6 +148,7 @@ jobs:
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
                   AWS_DEFAULT_REGION: ${{ secrets.S3_REGION }}
               run: |
+                  aws configure set default.s3.addressing_style virtual
                   ENDPOINT_FLAG=""
                   if [ -n "${{ secrets.S3_ENDPOINT }}" ]; then
                     ENDPOINT_FLAG="--endpoint-url ${{ secrets.S3_ENDPOINT }}"
@@ -314,6 +316,7 @@ jobs:
                   AWS_DEFAULT_REGION: ${{ secrets.S3_REGION }}
                   BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
               run: |
+                  aws configure set default.s3.addressing_style virtual
                   ENDPOINT_FLAG=""
                   if [ -n "${{ secrets.S3_ENDPOINT }}" ]; then
                     ENDPOINT_FLAG="--endpoint-url ${{ secrets.S3_ENDPOINT }}"
@@ -339,6 +342,7 @@ jobs:
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
                   AWS_DEFAULT_REGION: ${{ secrets.S3_REGION }}
               run: |
+                  aws configure set default.s3.addressing_style virtual
                   ENDPOINT_FLAG=""
                   if [ -n "${{ secrets.S3_ENDPOINT }}" ]; then
                     ENDPOINT_FLAG="--endpoint-url ${{ secrets.S3_ENDPOINT }}"
